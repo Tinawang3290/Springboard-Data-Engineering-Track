@@ -26,8 +26,7 @@ class Customer(Person):
 # instantiate the Account types here.
     def create_account(self):
         '''
-        Logic: Requests for user input and returns a specified account as an instance of one of the different
-        account classes.
+        This method allows users to create a specified account as an instance of various account classes.
         '''
         request_input = input('Do you need to create accounts? Enter "Y" to create: ')
         while request_input == "Y":
@@ -56,7 +55,7 @@ class Customer(Person):
     # instantiate the Service types here.
     def create_service(self):
         '''
-        Logic: Requests for user input and returns a specified service as an instance of one of the different service classes.
+        This method allows users to create a specified service as an instance of various service classes.
         '''
         request_input = input('Do you need to create services? Enter "Y" to create: ')
         while request_input == 'Y':
@@ -84,6 +83,9 @@ class Customer(Person):
         return self.service_type  # return the object itself.
 
     def close_account(self):
+        '''
+        This method gives the user the option to close the bank accounts they have created and print out the details.
+        '''
         request_input = input('Do you need to close accounts? Enter "Y" to close: ') # Ensure customers' needs are all set!
         while request_input == 'Y': # while loop to enable multiple accounts creating or removing until confirmed.
             acc_num = input('Please enter the account num to remove here: ')
@@ -101,19 +103,31 @@ class Customer(Person):
         print('----------------------------------------------------')
     
     def transfer(self): # want the customer to be able to select the accounts to transfer from and to.
-        transfer_from = input('Please select the account that you want to transfer from: ')
-        transfer_to = input('Please select the account that you want to transfer to: ')
-        transfer_amount = input('Please enter amount to transfer in $: ')
-        self.transfer_from = transfer_from
-        self.transfer_to = transfer_to
-        self.transfer_amount = transfer_amount
-        if self.transfer_from in self.accounts_available.keys():  
-            self.accounts_available[self.transfer_from].withdraw(self.transfer_amount)    # maybe add a while loop?
-        if self.transfer_to in self.accounts_available.keys(): 
-            self.accounts_available[self.transfer_from].deposit(self.transfer_amount) 
-        else:
-            print('The account does not exist!')  
-        print('${} has been transferred from account: {} to account: {}!'.format(self.transfer_amount, self.transfer_from, self.transfer_to))
+        '''
+        This method gives the user the option to make multiple transfers from one account to another and print out the details.
+        '''
+        request_input = input('Please enter "Y" to transfer: ')
+        while request_input == "Y":
+            transfer_from = input('Please select the account that you want to transfer from: ')
+            transfer_to = input('Please select the account that you want to transfer to: ')
+            transfer_amount = input('Please enter amount to transfer in $: ')
+            self.transfer_from = transfer_from
+            self.transfer_to = transfer_to
+            self.transfer_amount = transfer_amount
+            if self.transfer_from in self.accounts_available.keys():  
+                self.accounts_available[self.transfer_from].withdraw(self.transfer_amount)    
+            if self.transfer_to in self.accounts_available.keys(): 
+                self.accounts_available[self.transfer_from].deposit(self.transfer_amount) 
+            else:
+                print('The account does not exist!')  
+            print('${} has been transferred from account: {} to account: {}!'.format(self.transfer_amount, self.transfer_from, self.transfer_to))
+            more_input = input('Please enter "Y" for more transfers: ')
+            if more_input == 'Y':
+                continue
+            else:
+                break
+        print('You are all set!')
+        
         print('----------------------------------------------------')
     
     def display_profile(self):
