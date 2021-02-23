@@ -299,7 +299,7 @@ class Loan(Service):
         print('----------------------------------------------------')
         return self.service_balance
 
-p1 = Employee('Tina', 'Wang', '2042 18th ave', '408-565-5945', 100000)
+p1 = Employee('Jenny', 'Wang', '2042 Water St', '123-456-6789', 100000)
 #p1.adjust_salary(20000)
 #p1.close_account()
 s0 = p1.create_account()
