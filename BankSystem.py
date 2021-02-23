@@ -1,5 +1,6 @@
 #1 create Person Parent Class
 import uuid
+import json
 class Person:
     def __init__(self, first_name, last_name, addr, phone_num):   
         self.first_name = first_name
@@ -114,13 +115,13 @@ class Customer(Person):
             self.transfer_from = transfer_from
             self.transfer_to = transfer_to
             self.transfer_amount = transfer_amount
-            if self.transfer_from in self.accounts_available.keys():  
-                self.accounts_available[self.transfer_from].withdraw(self.transfer_amount)    
-            if self.transfer_to in self.accounts_available.keys(): 
-                self.accounts_available[self.transfer_from].deposit(self.transfer_amount) 
+            if self.transfer_from in self.accounts_available.keys() and self.transfer_to in self.accounts_available.keys():  
+                self.accounts_available[self.transfer_from].withdraw(self.transfer_amount)    # This create an account instance and call its withdraw method.
+            # if self.transfer_to in self.accounts_available.keys(): 
+                self.accounts_available[self.transfer_to].deposit(self.transfer_amount)  # This create an account instance and call its deposit method.
+                print('${} has been transferred from account: {} to account: {}!'.format(self.transfer_amount, self.transfer_from, self.transfer_to))
             else:
-                print('The account does not exist!')  
-            print('${} has been transferred from account: {} to account: {}!'.format(self.transfer_amount, self.transfer_from, self.transfer_to))
+                print('The account does not exist. Please try again!')        
             more_input = input('Please enter "Y" for more transfers: ')
             if more_input == 'Y':
                 continue
