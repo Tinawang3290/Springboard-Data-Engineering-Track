@@ -22,8 +22,6 @@ class Customer(Person):
         Person.__init__(self, first_name, last_name, addr, phone_num)
         self.accounts_available = {}  # key: account_num and values: account obj.
         self.services_available = {}  # key: service_num and values: service obj.
-        self.accounts_balance = {}
-        self.services_balance = {}
 # instantiate the Account types here.
     def create_account(self):
         '''
@@ -33,25 +31,25 @@ class Customer(Person):
         while request_input == "Y":
             create_account_input = input('Please type "S" to create SavingsAccount and "C" to create CheckingsAccount: ')
             if create_account_input == 'C':
-                self.account_type = CheckingsAccount()
-                print('Welcome to the Account System! Your CheckingsAccount {} has been created!'.format(self.account_type.account_num))
-                self.accounts_available[self.account_type.account_num] = self.account_type
-                self.accounts_balance[self.account_type.account_num] = self.account_type.balance_amount
+                account_type = CheckingsAccount()
+                print('Welcome to the Account System! Your CheckingsAccount {} has been created!'.format(account_type.account_num))
+                self.accounts_available[account_type.account_num] = account_type
+                # self.accounts_balance[account_type.account_num] = account_type.balance_amount
                 continue
             elif create_account_input == 'S':
-                self.account_type = SavingsAccount()
-                print('Welcome to the Account System! Your SavingsAccount {} has been created!'.format(self.account_type.account_num)) # indicates the SavingsAccount has been created successfully.    
-                self.accounts_available[self.account_type.account_num] = self.account_type
-                self.accounts_balance[self.account_type.account_num] = self.account_type.balance_amount
+                account_type = SavingsAccount()
+                print('Welcome to the Account System! Your SavingsAccount {} has been created!'.format(account_type.account_num)) # indicates the SavingsAccount has been created successfully.    
+                self.accounts_available[account_type.account_num] = account_type
+                # self.accounts_balance[account_type.account_num] = self.account_type.balance_amount
                 continue
             else:
                 print('You are all set!')  
                 break 
         else:
-            print('You are all set! Your current available accounts are {}.'.format(self.account_type.account_num))    
+            print('You are all set! Your current available accounts are {}.'.format(account_type.account_num))    
         print('Your current available accounts are {}.'.format(self.accounts_available)) 
         print('----------------------------------------------------')
-        return self.account_type
+        # return self.account_type
     
     # instantiate the Service types here.
     def create_service(self):
@@ -62,26 +60,23 @@ class Customer(Person):
         while request_input == 'Y':
             create_service_input = input('Please type "C" to create CreditCard service and "L" to create Loan service: ')
             if create_service_input == 'C':
-                self.service_type = CreditCard()
-                print('Welcome to the Service System! Your ServiceAccount {} has been created!'.format(self.service_type.service_num))
-                self.services_available[self.service_type.service_num] = self.service_type
-                self.services_balance[self.service_type.service_num] = self.service_type.service_amount
+                service_type = CreditCard(self.first_name + ' ' + self.last_name,'12/26','009')  # Should I ask for input here for expiration_date and CVV here? Or in the creditcard() method?
+                print('Welcome to the Service System! Your ServiceAccount {} has been created!'.format(service_type.service_num))
+                self.services_available[service_type.service_num] = service_type
                 continue
 
             elif create_service_input == 'L':
-                self.service_type = Loan()  
-                print('Welcome to the Service System! Your ServiceAccount {} has been created!'.format(self.service_type.service_num))
-                self.services_available[self.service_type.service_num] = self.service_type
-                self.services_balance[self.service_type.service_num] = self.service_type.service_amount
+                service_type = Loan()  
+                print('Welcome to the Service System! Your ServiceAccount {} has been created!'.format(service_type.service_num))
+                self.services_available[service_type.service_num] = service_type
                 continue
             else:
                 print('You are all set!')  
                 break
         else:
-            print('You are all set! Your current available services are {}.'.format(self.service_type.service_num))    
+            print('You are all set! Your current available services are {}.'.format(service_type.service_num))    
         print('Your current available services are {}.'.format(self.services_available)) 
         print('----------------------------------------------------')
-        return self.service_type  # return the object itself.
 
     def close_account(self):
         '''
@@ -91,9 +86,8 @@ class Customer(Person):
         while request_input == 'Y': # while loop to enable multiple accounts creating or removing until confirmed.
             acc_num = input('Please enter the account num to remove here: ')
             # need skip the error if the num doesn't match and ensure the code still runs without interruptions.
-            if acc_num in self.accounts_available:
-                self.accounts_available.remove(acc_num)
-                self.accounts_obj.remove()  
+            if acc_num in self.accounts_available.keys():
+                del self.accounts_available[acc_num] 
                 continue         
             else:
                 print('Oops! Account does not exist. Please try again!') # it doesn't seem this is being executed.
@@ -116,8 +110,7 @@ class Customer(Person):
             self.transfer_to = transfer_to
             self.transfer_amount = transfer_amount
             if self.transfer_from in self.accounts_available.keys() and self.transfer_to in self.accounts_available.keys():  
-                self.accounts_available[self.transfer_from].withdraw(self.transfer_amount)    # This create an account instance and call its withdraw method.
-            # if self.transfer_to in self.accounts_available.keys(): 
+                self.accounts_available[self.transfer_from].withdraw(self.transfer_amount)    # This create an account instance and call its withdraw method. 
                 self.accounts_available[self.transfer_to].deposit(self.transfer_amount)  # This create an account instance and call its deposit method.
                 print('${} has been transferred from account: {} to account: {}!'.format(self.transfer_amount, self.transfer_from, self.transfer_to))
             else:
@@ -127,13 +120,18 @@ class Customer(Person):
                 continue
             else:
                 break
-        print('You are all set!')
-        
+        print('You are all set!')  
         print('----------------------------------------------------')
     
     def display_profile(self):
+        total_account_amount = 0
+        total_service_amount = 0
         Person.display_profile(self)
-        print('Available Accounts: {} \nAccount Balance: {} \nAvailable Services: {} \nService Balance: {}'.format(self.accounts_available, self.accounts_balance, self.services_available, self.services_balance))
+        for acc in self.accounts_available.values():
+            total_account_amount += acc.balance_amount
+        for ser in self.services_available.values():
+            total_service_amount += ser.service_balance
+        print('Available Accounts: {} \nAccount Balance: {} \nAvailable Services: {} \nService Balance: {}'.format(self.accounts_available, total_account_amount, self.services_available, total_service_amount))
 
 class Employee(Customer):
     def __init__(self, first_name, last_name, addr, phone_num, salary):
@@ -159,42 +157,45 @@ class Account:
         print('----------------------------------------------------')
 
     def deposit(self, deposit_amount = 0):
-        self.balance_amount += deposit_amount
-        self.deposit_amount += deposit_amount
-        request_input = input('Please enter "Y" to deposit: ')
-        while request_input == 'Y':
-            amount = float(input('Please enter amount to deposit in $: '))
-            self.balance_amount += amount
-            self.deposit_amount += amount
-            print('Your deposit amount is ${} and total balance amount is ${}.'.format(self.deposit_amount, self.balance_amount))
-            more_input = input('Please enter "Y" for more deposit: ')
-            if more_input == 'Y':
-                continue
-            else:
-                break
-        print('You are all set!')
-        print('----------------------------------------------------')
-           
-    def withdraw(self, withdraw_amount = 0):
-        self.balance_amount -= withdraw_amount
-        self.withdraw_amount += withdraw_amount
-        request_input = input('Please enter "Y" to withdraw: ')
-        while request_input == 'Y':
-            amount = float(input('Please enter amount to withdraw in $:'))
-            if amount <= self.balance_amount:    
-                self.balance_amount -= amount
-                self.withdraw_amount += amount
-                print('Your withdraw amount is ${} and total balance amount is ${}.'.format(self.withdraw_amount, self.balance_amount))
-                more_input = input('Please enter "Y" for more withdraw: ')
+        if deposit_amount != 0:
+            self.balance_amount += deposit_amount
+            self.deposit_amount += deposit_amount
+        else:
+            request_input = input('Please enter "Y" to deposit: ')
+            while request_input == 'Y':
+                amount = float(input('Please enter amount to deposit in $: '))
+                self.balance_amount += amount
+                self.deposit_amount += amount
+                print('Your deposit amount is ${} and total balance amount is ${}.'.format(self.deposit_amount, self.balance_amount))
+                more_input = input('Please enter "Y" for more deposit: ')
                 if more_input == 'Y':
                     continue
                 else:
                     break
-            else:
-                print('Insufficient balance! Your current available balance amount is ${}.'.format(self.balance_amount)) # low balance reminder
         print('You are all set!')
         print('----------------------------------------------------')
-
+           
+    def withdraw(self, withdraw_amount = 0):
+        if withdraw_amount != 0:
+            self.balance_amount -= withdraw_amount
+            self.withdraw_amount += withdraw_amount
+        else: 
+            request_input = input('Please enter "Y" to withdraw: ')
+            while request_input == 'Y':
+                amount = float(input('Please enter amount to withdraw in $:'))
+                if amount <= self.balance_amount:    
+                    self.balance_amount -= amount
+                    self.withdraw_amount += amount
+                    print('Your withdraw amount is ${} and total balance amount is ${}.'.format(self.withdraw_amount, self.balance_amount))
+                    more_input = input('Please enter "Y" for more withdraw: ')
+                    if more_input == 'Y':
+                        continue
+                    else:
+                        break
+                else:
+                    print('Insufficient balance! Your current available balance amount is ${}.'.format(self.balance_amount)) # low balance reminder
+        print('You are all set!')
+        print('----------------------------------------------------')
 
     def display(self):
         print('----------------------------------------------------')
@@ -235,25 +236,22 @@ class Service:
         return self.service_balance
 
 class CreditCard(Service):
-    def __init__(self, credit_limit=20000): 
+    def __init__(self, name, expiration_date, cvv, credit_limit=10000, salary = 0): 
         Service.__init__(self)
         self.credit_limit = credit_limit
-        name = input('Please enter your full name on the card: ') 
-        expiration_date = input('Please enter your card expiration date in MM/YY format: ')
-        cvv = input('Please enter the CVV of your card: ')
         self.name = name
         self.expiration_date = expiration_date
         self.cvv = cvv
-
-        # if self.salary < 100000: # how to link salary from Employee class to the credit limit here
-        #     self.credit_limit = 5000
-        # elif self.salary >= 100000 and self.salary < 150000:
-        #     self.credit_limit = 10000
-        # elif self.salary >= 150000 and self.salary < 200000:
-        #     self.credit_limit = 15000
-        # else:
-        #     self.credit_limit = 20000
-        # return self.credit_limit
+        self.credit_limit = credit_limit
+        if salary > 0 and salary < 100000: # how to link salary from Employee class to the credit limit here
+            self.credit_limit = 5000
+        elif salary >= 100000 and salary < 150000:
+            self.credit_limit = 10000
+        elif salary >= 150000 and salary < 200000:
+            self.credit_limit = 15000
+        else:
+            self.credit_limit = 20000
+        print('{}, your credit card with credit limit of ${} and expiration date of {} has been created.'.format(self.name, self.credit_limit,self.expiration_date))
 
     def make_purchase(self):
         request_input = input('Enter "Y" to make a purchase: ')
@@ -267,7 +265,11 @@ class CreditCard(Service):
                 self.service_balance += purchase_amount # accumulated balance amount on the card
                 self.available_balance = self.credit_limit - self.service_balance  # available balanace to borrow based on the credit_limit.
                 print('You have made a purchase at {} with the amount of ${} and your current available credit card balance is ${}'.format(self.vendor, self.purchase_amount,self.available_balance)) # to confirm the purchase has been made.
-                continue
+                more_input = input('Enter "Y" to make another purchase: ')
+                if more_input == 'Y':
+                    continue
+                else:
+                    break
             else: 
                 print('Your purchase amount exceeds the limit! Your remaining available credit balance amount is ${}.'.format(self.available_balance)) 
                 break
@@ -280,11 +282,12 @@ class CreditCard(Service):
    
 
 class Loan(Service):
-    def __init__(self):
+    def __init__(self, loan_amount = 100000):
         Service.__init__(self)
+        self.service_balance += loan_amount
         print('----------------------------------------------------')
 
-    def take_loan(self):
+    def take_loan(self):   # change the method to something else. 
         request_input = input('Please enter "Y" to take loans: ')
         while request_input == "Y":
             loan_amount = float(input('Please enter the loan amount in $: '))
@@ -299,19 +302,17 @@ class Loan(Service):
         print('----------------------------------------------------')
         return self.service_balance
 
-p1 = Employee('Jenny', 'Wang', '2042 Water St', '123-456-6789', 100000)
+p1 = Employee('Jenny', 'Wang', '2042 Water St', '123-456-6789', 200000)
 #p1.adjust_salary(20000)
 #p1.close_account()
-s0 = p1.create_account()
-# s0.deposit()
+#s0 = p1.create_account()
 #s0.withdraw()
-p1.transfer()
-# s1 = p1.create_service()
-# s1.make_purchase()
+# p1.transfer()
+p1.create_service()
+s1 = CreditCard(p1.first_name + ' ' + p1.last_name, '01/23','004', salary = p1.salary) # for testing purposes, can do this.
+s1.make_purchase()
 # s1.take_loan()
 p1.display_profile()
 
-# p1.create_service()
-# p1.get_accounts()
-# p1.set_accounts()
+
 
