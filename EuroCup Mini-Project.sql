@@ -24,28 +24,22 @@ WHERE
     stop1_sec = 0;
     
 # 4. Write a SQL query to compute a list showing the number of substitutions that happened in various stages of play for the entire tournament
--- How to define susbstitution and whether I'm picking the correct base ?
 SELECT 
-    COUNT(player_id) AS substitution_num
+	Play_stage,
+    ROUND(COUNT(player_id)/2 ,0) AS substitution_num
 FROM
     euro_cup_2016.player_in_out po
         JOIN
     match_mast mm ON po.match_no = mm.match_no
-WHERE
-    in_out = 'I';
+GROUP BY play_stage
 
 # 5. Write a SQL query to find the number of bookings that happened in stoppage time.
-SELECT 
+    SELECT 
     COUNT(player_id) AS booking_num
 FROM
-    (SELECT 
-        pb.*, stop1_sec, stop2_sec
-    FROM
-        euro_cup_2016.player_booked pb
-    JOIN match_mast mm ON pb.match_no = mm.match_no
-    WHERE booking_time != 0
-        AND (stop1_sec = 0
-        OR stop2_sec = 0)) nt;
+    euro_cup_2016.player_booked pb
+WHERE
+    play_schedule = 'ST';
 
 # 6. Write a SQL query to find the number of matches that were won by a single point, but do not include matches decided by penalty shootout.
 SELECT 
