@@ -155,10 +155,6 @@ FOREIGN KEY (airline_id)  REFERENCES air_traffic2.airlines(airline_id),
 ADD CONSTRAINT FK_guest_ID 
 FOREIGN KEY (guest_id) REFERENCES air_traffic2.guests(guest_id);
 
--- ALTER TABLE air_traffic2.flights
--- ADD CONSTRAINT FK_guest_ID 
--- FOREIGN KEY (guest_id) REFERENCES air_traffic2.guests(guest_id);
-
 INSERT INTO  air_traffic2.flights
   (from_city, from_country, to_city, to_country, seat, departure, arrival, airline_id, guest_id)
 VALUES
