@@ -1,6 +1,7 @@
-# To simply the big O notation complexity
-# Take The fastest growing term
-# Take out the coefficient
+
+# What is the Big O notation? --> Big-O is a standard mathematical notation to show how efficient an algorithm by it's worse-case scenario.  
+# to measure the run time of an algorithm would grow with the size of the input increases.
+# How to simply the big O notation complexity? 1. Take The fastest growing term 2. Take out the coefficient
 
 # Big-O Notation Practice
 # In this exercise, you’ll analyze expressions and code to figure out the time complexity.
