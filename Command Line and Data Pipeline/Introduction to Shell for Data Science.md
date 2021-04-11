@@ -19,7 +19,7 @@ To find out where you are in the filesystem, run the command pwd (short for "pri
 ### How can I identify files and directories? ( ls )
 pwd tells you where you are. To find out what's there, type ls (which is short for "listing") and press the enter key. On its own, ls lists the contents of your current directory (the one displayed by pwd). If you add the names of some files, ls will list them, and if you add the names of directories, it will list their contents.
 
-Absolute and relative path
+**Absolute and relative path**
 
 An absolute path is like a latitude and longitude: it has the same value no matter where you are. A relative path, on the other hand, specifies a location starting from where you are: it's like saying "20 kilometers north".
 
@@ -52,14 +52,14 @@ copies all of the files (autumn.csv and winter.csv) into that directory.
 
 While cp copies a file, mv moves it from one directory to another, just as if you had dragged it in a graphical file browser. It handles its parameters the same way as cp, so the command:
 
-mv autumn.csv winter.csv ..
+`mv autumn.csv winter.csv ..`
 moves the files autumn.csv and winter.csv from the current working directory up one level to its parent directory (because .. always refers to the directory above your current location).
 
 ### How can I rename a file? ( mv )
 
 mv can also be used to rename files. If you run:
 
-mv course.txt old-course.txt
+`mv course.txt old-course.txt`
 then the file course.txt in the current working directory is "moved" to the file old-course.txt. This is different from the way file browsers work, but is often handy.
 
 One warning: just like cp, mv will overwrite existing files. If, for example, you already have a file called old-course.txt, then the command shown above will replace it with whatever is in course.txt.
@@ -68,10 +68,10 @@ One warning: just like cp, mv will overwrite existing files. If, for example, yo
 
 We can copy files and move them around; to delete them, we use rm, which stands for "remove". As with cp and mv, you can give rm the names of as many files as you'd like, so:
 
-rm thesis.txt backup/thesis-2017-08.txt
-removes both thesis.txt and backup/thesis-2017-08.txt
+`rm thesis.txt backup/thesis-2017-08.txt
+removes both thesis.txt and backup/thesis-2017-08.txt`
 
-rm does exactly what its name says, and it does it right away: unlike graphical file browsers, the shell doesn't have a trash can, so when you type the command above, your thesis is gone for good.
+`rm` does exactly what its name says, and it does it right away: unlike graphical file browsers, the shell doesn't have a trash can, so when you type the command above, your thesis is gone for good.
 
 ### How can I create and delete directories? (rmdir) and (mkdir)
 
@@ -122,14 +122,14 @@ A flag's name usually indicates its purpose (for example, -n is meant to signal 
 In order to see everything underneath a directory, no matter how deeply nested it is, you can give ls the flag -R (which means "recursive"); this shows every file and directory in the current level, then everything in each sub-directory, and so on.
 To help you know what is what, ls has another flag -F that prints a /after the name of every directory and a * after the name of every runnable program.  
 
-How can I get help for a command?
+### How can I get help for a command?
 To find out what commands do, people used to use the man command (short for "manual"). For example, the command man head brings up this information:
 
 man automatically invokes less, so you may need to press spacebar to page through the information and :q to quit.
 
 The one-line description under NAME tells you briefly what the command does, and the summary under SYNOPSIS lists all the flags it understands. Anything that is optional is shown in square brackets [...], either/or alternatives are separated by |, and things that can be repeated are shown by ..., so head's manual page is telling you that you can either give a line count with -n or a byte count with -c, and that you can give it any number of filenames.
 
-How can I select columns from a file? ( cut with -f -d)
+### How can I select columns from a file? ( cut with -f -d)
 
 head and tail let you select rows from a text file. If you want to select columns, you can use the command cut. It has several options (use man cut to explore them), but the most common is something like:
 
