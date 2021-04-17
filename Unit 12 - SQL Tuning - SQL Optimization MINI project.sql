@@ -1312,7 +1312,7 @@ SET @v8 = 'MAT';
 
 -- 5. List the names of students who have taken a course from department v6 (deptId), but not v7.
 -- EXPLAIN
-SELECT * FROM Student
+SELECT name FROM Student
 WHERE ID IN 
 	(SELECT studId FROM Transcript, Course WHERE deptId = @v6 AND Course.crsCode = Transcript.crsCode
 	AND studId NOT IN
