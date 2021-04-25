@@ -3,6 +3,8 @@
 We regularly interact with banks in our day-to-day lives, but rarely think about the systems that power them. Banks power global finance, and the online systems that enable this are incredibly complex.
 In this project, we are required to create a simpler version of a banking system by using Python OOP techniques. In the bank model, we have entities for customers, accounts, employees, and services like loans and credit cards. Each of these entities have their distinct properties and methods.
 
+The final project should be structured in the manner outlined https://docs.python-guide.org/writing/structure/. Your project should be executable via the command line. It should accept user inputs and return results from the command line.
+
 ### Step 1: Using UML diagram to design the bank system
 it encompasses three parent classes:
 
