@@ -1,7 +1,7 @@
 import uuid
 import pickle
 
-class Account:
+class Account:  #2 Create Account Parent Class.
     def __init__(self):
         account_num = str(uuid.uuid4())[:8] # system generated uuid
         self.account_num = account_num 
@@ -49,20 +49,25 @@ class Account:
                     print('Insufficient balance! Your current available balance amount is ${}.'.format(self.balance_amount)) # low balance reminder
         print('----------------------------------------------------')
 
-    def display(self):
-        print('----------------------------------------------------')
-        print("Account_num: {} \nTotal Available Balance Amount: ${} \nTotal Deposit Amount: ${} \nTotal Withdraw Amount: ${} \nTotal Interest Accrued Amount: ${}".format(self.account_num,self.balance_amount,self.deposit_amount,self.withdraw_amount,self.int_accrued_amount))
+    def display_account(self):
+        print("Accounts Display: \nAccount_num: {} \nTotal Available Balance Amount: ${} \nTotal Deposit Amount: ${} \nTotal Withdraw Amount: ${} \nTotal Interest Accrued Amount: ${}".format(self.account_num,self.balance_amount,self.deposit_amount,self.withdraw_amount,self.int_accrued_amount))
 
 class CheckingsAccount(Account):
+    '''
+    CheckingsAccount is the child class of Account parent class that can inherits all attributes and methods from Account.
+    '''
     def __init__(self):
-        Account.__init__(self) # how to rename the variable to differentiate types here? 
+        Account.__init__(self) 
 
 class SavingsAccount(Account):
+    '''
+    SavingsAccount is the child class of Account parent class that can inherits all attributes and methods from Account.
+    '''
     def __init__(self):
-        Account.__init__(self)  # invoking the __init__ of the parent class 
+        Account.__init__(self)  
 
     def interest_accrued(self): 
         int_rate = float(input('Please enter interest rate: '))
-        self.int_accrued_amount = int_rate * self.balance_amount # could be more sophisticated by 
+        self.int_accrued_amount = int_rate * self.balance_amount 
         self.balance_amount += self.int_accrued_amount 
         return self.int_accrued_amount
