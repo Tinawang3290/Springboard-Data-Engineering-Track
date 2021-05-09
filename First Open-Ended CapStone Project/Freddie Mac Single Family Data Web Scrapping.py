@@ -3,8 +3,9 @@ import os
 import urllib
 import zipfile
 import threading
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 import csv
+import pycron
 
 def login_website(user_name, password, login_url, download_url):
     '''
@@ -82,6 +83,17 @@ def write_into_consolidated_file(dir_name, unzipped_dir_name, start_year, end_ye
             # os.remove(source_file_name)    
     print(" SUCCESS   : consolidated files have been created succesfully!")
 
+def scheduler():
+    '''
+    use cron scheduler to schedule for downloads
+    '''
+    while True:
+        if pycron.is_now('0 2 * * 0'):   # True Every Sunday at 02:00
+            print('running backup')
+            time.sleep(3600)               # The process should take at least 1 hour to avoid running twice given large amount of data
+        else:
+            time.sleep(1800)               # Check again in 30 mins
+
 def start_execution():
     login_url='https://freddiemac.embs.com/FLoan/secure/login.php'
     download_url='https://freddiemac.embs.com/FLoan/Data/download.php'
@@ -101,7 +113,9 @@ def start_execution():
 if __name__ == '__main__':
     start_execution()
 
-# use cron scheduler to schedule for downloads
+    
+
+
 
 
 
