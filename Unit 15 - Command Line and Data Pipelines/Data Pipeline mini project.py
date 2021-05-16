@@ -9,8 +9,8 @@ def get_db_connection() -> object:
     """
     connection = None
     try:
-        connection = mysql.connector.connect(user='root',
-                                             password='Kyleling1220@',
+        connection = mysql.connector.connect(user='your username',
+                                             password='your password',
                                              host='localhost',
                                              port='3306',
                                              database='ticket_system')
