@@ -45,13 +45,15 @@ def load_third_party(conn, file_path_csv):
             customer_id INT,
             price DECIMAL(7,2),
             num_tickets INT,
-            PRIMARY KEY(ticket_id) --> To ensure no duplicate entries will be inserted.
+            PRIMARY KEY(ticket_id) 
             );
         """
         source_data = pd.read_csv(file_path_csv, header=None)
-        cursor.execute(sql_ddl_statement)
+        # cursor.execute(sql_ddl_statement)
         # cursor.execute('SHOW DATABASES')
         print('Database and table are created.')
+        for _ in cursor.execute(sql_ddl_statement, multi=True):
+            pass
         for i, row in source_data.iterrows():
             insert_data = """INSERT INTO ticket_system.ticket_sales
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
@@ -70,10 +72,10 @@ def query_popular_tickets(conn):
     :param conn:
     :return:
     """
-    sql_statement = '''SELECT event_name, SUM(num_tickets) as total_tickets FROM ticket_system.ticket_sales
-    GROUP BY event_name 
-    ORDER BY SUM(num_tickets) DESC 
-    LIMIT 1
+    sql_statement = '''SELECT event_name
+    FROM ticket_system.ticket_sales
+    GROUP BY event_name
+    ORDER BY sum(num_tickets) DESC;
     '''
     cursor = conn.cursor()
     cursor.execute(sql_statement)
@@ -83,9 +85,10 @@ def query_popular_tickets(conn):
 
 
 if __name__ == '__main__':
+    '''
+    '''
     conn = get_db_connection()
     file_path_csv = '~/downloads/third_party_sales_1.csv'
-    load_third_party(conn,file_path_csv)
-
-
+    load_third_party(conn, file_path_csv)
+    print(query_popular_tickets(conn))
 
