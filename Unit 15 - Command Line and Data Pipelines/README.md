@@ -18,23 +18,28 @@ can be established only when the user provides the proper target host, port, and
 credentials.
 
 ##### 2.2 Load CSV to table
-You’ll find the third party vendor data in the CSV file provided to you. The CSV follows the
-schema of the table. You will need to use the Python connector to insert each record of the CSV
+Find the third party vendor data in the CSV file that is provided and The CSV follows the
+schema of the table. Then need to use the Python connector to insert each record of the CSV
 file into the “sales” table.
 ![image](https://user-images.githubusercontent.com/37784402/118389392-a2956900-b5de-11eb-9e10-3910270bae1b.png)
 
 
 #### Step 3. Display statistical information
-After the data is loaded into the table, you can use this data to provide recommendations to the
+After the data is loaded into the table, use the data to provide recommendations to the
 user. For instance, recommending popular events by finding the most top-selling tickets for the
 past month.
+
+Screen Shot 2021-05-16 at 10.34.09 AM![image](https://user-images.githubusercontent.com/37784402/118406911-f893fc00-b632-11eb-9e25-5481c6f2bee0.png)
 
 ##### 3.1 Query the table and get the selected records
 
 ##### 3.2 Display the result
-The records you just retrieved are formatted as a list of tuples. You need to convert the format to
+The records just retrieved are formatted as a list of tuples. You need to convert the format to
 display the on-screen results in a more user-friendly format.
 
 Errors:
 
-`Error while connecting to MySQL 2014 (HY000): Commands out of sync; you can't run this command now`
+`Error while connecting to MySQL 2014 (HY000): Commands out of sync; you can't run this command now` --> add below:  
+`for _ in cursor.execute(sql_ddl_statement, multi=True):
+            pass`
+
