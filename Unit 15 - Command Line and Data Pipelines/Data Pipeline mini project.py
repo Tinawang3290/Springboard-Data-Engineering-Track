@@ -9,8 +9,8 @@ def get_db_connection() -> object:
     """
     connection = None
     try:
-        connection = mysql.connector.connect(user='your username',
-                                             password='your password',
+        connection = mysql.connector.connect(user='root',
+                                             password='Kyleling1220@',
                                              host='localhost',
                                              port='3306',
                                              database='ticket_system')
@@ -72,10 +72,12 @@ def query_popular_tickets(conn):
     :param conn:
     :return:
     """
-    sql_statement = '''SELECT event_name
+    sql_statement = '''SELECT event_name FROM(
+    SELECT event_name, total_num, DENSE_RANK() OVER (ORDER BY total_num DESC) AS rk
+    FROM (SELECT event_name, SUM( num_tickets) AS total_num
     FROM ticket_system.ticket_sales
-    GROUP BY event_name
-    ORDER BY sum(num_tickets) DESC;
+    GROUP BY event_name) a) b
+    WHERE rk =1;
     '''
     cursor = conn.cursor()
     cursor.execute(sql_statement)
@@ -85,8 +87,6 @@ def query_popular_tickets(conn):
 
 
 if __name__ == '__main__':
-    '''
-    '''
     conn = get_db_connection()
     file_path_csv = '~/downloads/third_party_sales_1.csv'
     load_third_party(conn, file_path_csv)
