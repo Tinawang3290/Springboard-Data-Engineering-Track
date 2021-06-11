@@ -48,7 +48,16 @@ Error while connecting to MySQL: 1046 (3D000): No database selected
 ```
 - Solution: Pending
 
+## Question: 
+- why there is no database selected since the statement has ```USE Freddie_Mac_File```, and in mysql workbench, the datasource has been there.
+- I assumed there is no data inside is because that there is no datasource found?
+- Using for loop here is the best way to insert values into two different tables? Is the syntax right? 
 
+```
+Expected 31 fields in line 1685049, saw 33`
+```
+## Question: 
+Is removing the records the best way? I mean, if the missing size is large,which essentially gonna affect the results? what do you recommend to resolve this issue per industry standards?
 
 ### An Entity-Relationship diagram for your data mode
 
