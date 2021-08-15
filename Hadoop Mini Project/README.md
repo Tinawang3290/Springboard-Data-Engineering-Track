@@ -4,164 +4,47 @@ real-life data problem. This will strengthen your mindset for leveraging a MapRe
 model to process large scale data, and your capability to break down a complex problem into
 smaller tasks.
 
-### Hadoop Setup In The Pseudo-distributed Mode (Mac OS)
-https://towardsdatascience.com/installing-hadoop-on-a-mac-ec01c67b003c
+### 1. Hadoop Setup In The Pseudo-distributed Mode (Mac OS)
+Followed the below post to download and configure java, hadoop in terminal by using homebrew.
+https://towardsdatascience.com/installing-hadoop-on-a-mac-ec01c67b003c 
 
-- First, install HOMEBREW and JAVA
-Please follow this instruction to use Homebrew to install JAVA/OPENJDK: https://gist.github.com/gwpantazes/50810d5635fc2e053ad117b39b597a14
-After downloading JAVA, need to run `sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jd` command to start java.
+### 2. Credit Mapper and Reducer
+Once the data.csv file is downloaded, move it to the disired directory:
 
-Check below to set java home environment variable on Mac os X.
-https://mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/
-```
-(venv) (base) F0140:pythonProject tinawang$ ls -l /usr/bin/java
--rwxr-xr-x  1 root  wheel  138896 Jan  1  2020 /usr/bin/java
-(venv) (base) F0140:pythonProject tinawang$ java -version
-openjdk version "16.0.1" 2021-04-20
-OpenJDK Runtime Environment Homebrew (build 16.0.1+0)
-OpenJDK 64-Bit Server VM Homebrew (build 16.0.1+0, mixed mode, sharing)
-(venv) (base) F0140:pythonProject tinawang$ ls -l /etc/alternatives/java
-ls: /etc/alternatives/java: No such file or directory
-(venv) (base) F0140:pythonProject tinawang$ nano ~/.zshenv
-(venv) (base) F0140:pythonProject tinawang$ source ~/.zshenv
-(venv) (base) F0140:pythonProject tinawang$ echo $JAVA_HOME
-/usr/local/Cellar/openjdk/16.0.1/libexec/openjdk.jdk/Contents/Home
-```
-what is inside  `nano ~/.zshenv`:
-```
-export JAVA_HOME=$(/usr/libexec/java_home)
-export HADOOP_VERSION=3.3.1
-export HADOOP_HOME=usr/local/Cellar/hadoop/3.3.1
-export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
-
-
+``` 
+mv ~/downloads/*.csv /Users/tinawang/PycharmProjects/pythonProject/Hadoop_Mapreduce_Mini_Project
 ```
 
-- Once HOMEBREW and JAVA are installed, then run: `brew install hadoop` command in terminal. 
+- Filter out accidents with make and year.
+Please refer to `Mapper1.py, Reducer1.py`
 
-Follow this post https://stackoverflow.com/questions/51808588/run-hadoop-in-the-mac-os  
-https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
+- Count number of accident occurrences for the vehicle make and year.
+Please refer to `Mapper2.py, Reducer2.py`
 
-A. brew search hadoop
-`==> Formulae
-hadoop ✔
-` 
-
-B. Go to hadoop base directory, `usr/local/Cellar/hadoop/3.3.1/libexec/etc/hadoop` and under this folder, it requires to modify these files:  
-i). `hadoop-env.sh`
-Add
+### 3. Test the MapReduce jobs using bash pipeline
+- Input below to test Mapper1.py is working. 
 ```
-export HDFS_DATANODE_USER=root 
-export HADOOP_SECURE_DN_USER=root  
-export HDFS_NAMENODE_USER=root    
-export HDFS_SECONDARYNAMENODE_USER=root  
-export YARN_RESOURCEMANAGER_USER=root  
-export YARN_NODEMANAGER_USER=root 
-
-export HADOOP_OPTS="$HADOOP_OPTS -Djava.net.preferIPv4Stack=true -Djava.security.krb5.realm= -Djava.security.krb5.kdc="
-export JAVA_HOME = /usr/local/opt/openjdk
+cat data.csv | python3 Mapper1.py | sort
 ```
+<img width="542" alt="Screen Shot 2021-08-14 at 7 50 09 PM" src="https://user-images.githubusercontent.com/37784402/129465388-8910b322-ae45-42d3-b082-874db406f496.png">
 
-(ii). core-site.xml
-
-Then configure HDFS address and port number, open core-site.xml, input following content in configuration tag
+- Input below to test Reducer1.py is working.
 ```
-<!-- Put site-specific property overrides in this file. -->
- <configuration>
-    <property>
-        <name>hadoop.tmp.dir</name>
-        <value>/usr/local/Cellar/hadoop/hdfs/tmp</value>
-        <description>A base for other temporary directories.</description>
-    </property>
-    <property>
-        <name>fs.defaultFS</name>
-        <value>hdfs://localhost:8020</value>
-    </property>
-</configuration>
+ cat data.csv | python3 Mapper1.py | sort | python3 Reducer1.py
 ```
+<img width="446" alt="Screen Shot 2021-08-14 at 8 02 28 PM" src="https://user-images.githubusercontent.com/37784402/129465589-5abaf3d7-ac69-4f66-8ea2-0c1d82bf1f7e.png">
 
-(iii). mapred-site.xml  
-
-Configure MapReduce to use YARN, first copy mapred-site.xml.template to mapred-site.xml, and open mapred-site.xml, add
+- input below to test Mapper2.py is working.
 ```
-<configuration>
-    <property>
-        <name>mapreduce.framework.name</name>
-        <value>yarn</value>
-    </property>
-    <property>
-        <name>yarn.app.mapreduce.am.env</name>
-        <value>HADOOP_MAPRED_HOME=/Users/Masser/hadoop</value>
-    </property>
-    <property>
-        <name>mapreduce.map.env</name>
-        <value>HADOOP_MAPRED_HOME=/Users/Masser/hadoop</value>
-    </property>
-    <property>
-        <name>mapreduce.reduce.env</name>
-        <value>HADOOP_MAPRED_HOME=/Users/Masser/hadoop</value>
-    </property>
-</configuration>
+cat data.csv | python3 Mapper1.py | sort | python3 Reducer1.py | python3 Mapper2.py | sort
 ```
+<img width="280" alt="Screen Shot 2021-08-14 at 8 05 25 PM" src="https://user-images.githubusercontent.com/37784402/129465679-7c28cdd4-1e49-42cc-aa68-ec0365ff3bc6.png">
 
-(iv). hdfs-site.xml
-
-Set HDFS default backup, the default value is 3, we should change to 1, open hdfs-site.xml, add
+- input below to test Reducer2.py is working.
 ```
-<configuration>
-    <property>
-        <name>dfs.replication</name>
-        <value>1</value>
-    </property>
-</configuration> 
+cat data.csv | python3 Mapper1.py | sort | python3 Reducer1.py | python3 Mapper2.py | sort | python3 Reducer2.py
 ```
-(v). yarn-site.xml  
+<img width="247" alt="Screen Shot 2021-08-14 at 8 05 57 PM" src="https://user-images.githubusercontent.com/37784402/129465685-c3189f87-e980-4507-9ffe-4a8f6c6b9ed2.png">
 
-To walk through the org.apache.hadoop.yarn.exceptions.InvalidAuxServiceException: The auxService:mapreduce_shuffle does not exist, we need to modify the file,
-```
-<configuration>
-    <property>
-        <name>yarn.nodemanager.aux-services</name>
-        <value>mapreduce_shuffle</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
-        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
-    </property>
-</configuration>
-```
-
-C. Setup a pass-phraseless SSH and Authorize the generate SSH keys:
-```
-$ ssh-keygen -t rsa -P ''  
-$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-```
-Finally, Enable Remote Login in (System Preference->Sharing), Just click “remote login”.
-
-Test ssh at localhost: It should not prompt for a password
-
-$ ```ssh localhost```
-
-Last login: Sun Jul 11 11:54:01 2021
-
-D. Format the distributed file system with the below command before starting the Hadoop daemons. So that we can put our data sources into the hdfs file system while performing the map-reduce job
-https://www.youtube.com/watch?v=TMKRMJvsoOw 
-
-$ ```hdfs namenode -format```
-step1 : ```bin/hdfs namenode -format```
-step 2: start all hadoop processes: ```sbin/start-dfs.sh```
-step 3: NameNode: http://localhost:9870/
-step 4: start yarn: ```sbin/start-yarn.sh``
-Step 5: resourceManager: http://localhost:8088/
-type in command ```jps``` to check all the Hadoop daemons like NameNode, DataNode, ResourceManager, NodeManager etc. which are running on the machine
-Step 6: stop all hadoop process: sbin/stop-all.sh
-
-#### Note: issues might come up when run ```sbin/start-dfs.sh``` command.
-
-https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.4/bk_reference/content/hdfs-ports.html 
-
-
-
-
-
+### 4. Write a shell script to run the two MapReduce jobs
+Please refer to `bash_script.sh`
