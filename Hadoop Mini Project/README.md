@@ -8,7 +8,7 @@ smaller tasks.
 Followed the below post to download and configure java, hadoop in terminal by using homebrew.
 https://towardsdatascience.com/installing-hadoop-on-a-mac-ec01c67b003c 
 
-### 2. Credit Mapper and Reducer
+### 2. Create Mapper and Reducer
 Once the data.csv file is downloaded, move it to the disired directory:
 
 ``` 
