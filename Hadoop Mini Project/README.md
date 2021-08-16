@@ -82,7 +82,7 @@ hadoop jar /usr/local/Cellar/hadoop/3.3.1/libexec/share/hadoop/tools/lib/hadoop-
 
 For more details, I've created a `command_logs.txt` file to check the details that I ran on terminal shell.
 
-- Note: other commands you might need in this project as you experiment.
+- Note: other commands you might need in this project as you experiment. https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html
 To delete the folder that you created, you can run command `hadoop fs -rm -R /hadoop_project_folder/`
 
 
