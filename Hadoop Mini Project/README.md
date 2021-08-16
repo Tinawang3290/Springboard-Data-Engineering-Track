@@ -47,4 +47,36 @@ cat data.csv | python3 Mapper1.py | sort | python3 Reducer1.py | python3 Mapper2
 <img width="247" alt="Screen Shot 2021-08-14 at 8 05 57 PM" src="https://user-images.githubusercontent.com/37784402/129465685-c3189f87-e980-4507-9ffe-4a8f6c6b9ed2.png">
 
 ### 4. Write a shell script to run the two MapReduce jobs
-Please refer to `bash_script.sh`
+- Create a folder in hadoop and move the whole folder including all the mapreduce files from pycharm to this new folder.
+`hadoop fs -mkdir /hadoop_project_folder`
+- To confirm the folder has been created successfully, run the below command:
+`hadoop fs -ls /`
+- Move the whole folder including all the mapreduce files from pycharm to this new folder.
+`hadoop fs -copyFromLocal /Users/tinawang/PycharmProjects/pythonProject/Hadoop_Mapreduce_Mini_Project /hadoop_project_folder/`
+- To confirm the folder has been added, run the below command:
+`hadoop fs -ls /hadoop_project_folder`
+
+- Create a bashscript code `mapreduce1.sh` as below to execute the first mapreduce job.
+```
+hadoop jar /usr/local/Cellar/hadoop/3.3.1/libexec/share/hadoop/tools/lib/hadoop-streaming-3.3.1.jar \
+-file /Users/tinawang/PycharmProjects/pythonProject/Hadoop_Mapreduce_Mini_Project/Mapper1.py -mapper 'python3 Mapper1.py' \
+-file  /Users/tinawang/PycharmProjects/pythonProject/Hadoop_Mapreduce_Mini_Project/Reducer1.py -reducer 'python3 Reducer1.py' \
+-input /hadoop_project_folder/Hadoop_Mapreduce_Mini_Project/data.csv -output /hadoop_project_folder/output1
+```
+- After execution, check what's in the folder by running command `hadoop fs -ls /hadoop_project_folder/output1`
+and run command `hadoop fs -cat /hadoop_project_folder/output1/part-00000` to check the output1 file:
+
+<img width="1256" alt="Screen Shot 2021-08-15 at 6 38 04 PM" src="https://user-images.githubusercontent.com/37784402/129500566-f773bf15-23bd-4cc4-a374-ab60dc214b6e.png">
+
+- Similary, create a bashscript code `mapreduce2.sh` as below to execute the first mapreduce job.
+```
+hadoop jar /usr/local/Cellar/hadoop/3.3.1/libexec/share/hadoop/tools/lib/hadoop-streaming-3.3.1.jar \
+-file /Users/tinawang/PycharmProjects/pythonProject/Hadoop_Mapreduce_Mini_Project/Mapper2.py -mapper 'python3 Mapper2.py' \
+-file  /Users/tinawang/PycharmProjects/pythonProject/Hadoop_Mapreduce_Mini_Project/Reducer2.py -reducer 'python3 Reducer2.py' \
+-input /hadoop_project_folder/output1 -output /hadoop_project_folder/output2
+```
+- After execution, run command `hadoop fs -cat /hadoop_project_folder/output2/part-00000` to check the output2 file:
+<img width="1250" alt="Screen Shot 2021-08-15 at 6 42 37 PM" src="https://user-images.githubusercontent.com/37784402/129500758-e87f1dbf-bf0c-4604-b361-31a7a3d905c3.png">
+
+For more details, I've created a `command_logs.txt` file to check the details that I ran on terminal shell.
+
