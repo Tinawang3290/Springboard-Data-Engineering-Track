@@ -8,6 +8,8 @@ smaller tasks.
 Followed the below post to download and configure java, hadoop in terminal by using homebrew.
 https://towardsdatascience.com/installing-hadoop-on-a-mac-ec01c67b003c 
 
+To check whether the directory has been set up correctly in the `hadoop-env.sh`, can run `echo $HADOOP_OPTS`
+
 ### 2. Create Mapper and Reducer
 Once the data.csv file is downloaded, move it to the disired directory:
 
@@ -79,4 +81,8 @@ hadoop jar /usr/local/Cellar/hadoop/3.3.1/libexec/share/hadoop/tools/lib/hadoop-
 <img width="1250" alt="Screen Shot 2021-08-15 at 6 42 37 PM" src="https://user-images.githubusercontent.com/37784402/129500758-e87f1dbf-bf0c-4604-b361-31a7a3d905c3.png">
 
 For more details, I've created a `command_logs.txt` file to check the details that I ran on terminal shell.
+
+- Note: other commands you might need in this project as you experiment.
+To delete the folder that you created, you can run command `hadoop fs -rm -R /hadoop_project_folder/`
+
 
