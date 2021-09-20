@@ -64,7 +64,7 @@ Is removing the records the best way? I mean, if the missing size is large,which
 ![Screen Shot 2021-06-10 at 9 26 53 PM](https://user-images.githubusercontent.com/37784402/121630820-b774e900-ca32-11eb-946e-44f30dfb55ce.png)
 
 ### A Jupyter Notebook demonstrating the steps that you performed in the exploration of the dataset
-Ongoing
+Please reference `Freddie Mac Data Exploration.ipynb`
 
 ### A write-up of the insights from data exploration 
 
